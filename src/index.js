@@ -3,7 +3,10 @@ import loadScript from './loadScript'
 import trackPage from './track/page'
 import trackEvent from './track/event'
 import trackTime from './track/time'
+import trackItem from './track/item'
+import trackTransaction from './track/transaction'
 import autoTracking from './track/autoTracking'
+import send from './send'
 import set from './set'
 import init from './init'
 
@@ -20,7 +23,7 @@ const install = function (Vue, options = {}) {
 
   init(router, options.onAnalyticsReady)
 
-  const features = { trackEvent, trackPage, trackTime, set }
+  const features = { trackEvent, trackPage, trackTime, trackItem, trackTransaction, send, set }
 
   Vue.prototype.$ga = Vue.$ga = features
 }
