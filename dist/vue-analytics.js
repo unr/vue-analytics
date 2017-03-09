@@ -218,6 +218,39 @@ var trackTime = function (category, variable, value) {
 };
 
 /**
+ * Ecommerce Item tracking
+ * @param {String} id
+ * @param {String} name
+ * @param {String} sku
+ * @param {String} category
+ * @param {Number} price
+ * @param {Number} quantity
+ */
+var trackItem = function (id, name, sku, category, price, quantity) {
+  if (typeof window.ga === 'undefined') {
+    return;
+  }
+
+  window.ga('ecommerce:addTransaction', { id: id, name: name, sku: sku, category: category, price: price, quantity: quantity });
+};
+
+/**
+ * Ecommerce Transaction tracking
+ * @param {String} id
+ * @param {String} affiliation
+ * @param {Number} revenue
+ * @param {Number} shipping
+ * @param {Number} tax
+ */
+var trackTransaction = function (id, affiliation, revenue, shipping, tax) {
+  if (typeof window.ga === 'undefined') {
+    return;
+  }
+
+  window.ga('ecommerce:addTransaction', { id: id, affilication: affilication, revenue: revenue, shipping: shipping, tax: tax });
+};
+
+/**
  * Enable route autoTracking page
  * @param  {VueRouter} router
  */
@@ -250,6 +283,17 @@ var autoTracking = function (router) {
 
     trackPage(path, name, window.location.href);
   });
+};
+
+/**
+ * Sends Ecommerce Transaction & Items
+ */
+var send = function () {
+  if (typeof window.ga === 'undefined') {
+    return;
+  }
+
+  window.ga('ecommerce:send');
 };
 
 var init = function (router, callback) {
@@ -292,7 +336,7 @@ var install = function install(Vue) {
 
   init(router, options.onAnalyticsReady);
 
-  var features = { trackEvent: trackEvent, trackPage: trackPage, trackTime: trackTime, set: set$1 };
+  var features = { trackEvent: trackEvent, trackPage: trackPage, trackTime: trackTime, trackItem: trackItem, trackTransaction: trackTransaction, send: send, set: set$1 };
 
   Vue.prototype.$ga = Vue.$ga = features;
 };
